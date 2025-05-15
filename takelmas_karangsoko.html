@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>TAKELMAS DESA KARANGSOKO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  <style>
+    body {
+      padding: 40px 20px;
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .iframe-wrapper {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      background: white;
+    }
+    iframe {
+      width: 100%;
+      height: 70vh;
+      border: none;
+    }
+    .btn-group-custom .btn {
+      min-width: 160px;
+      font-weight: 500;
+    }
+    .btn.active {
+      background-color: #0d6efd;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="text-center mb-4">Takelmas Desa Karangsoko</h2>
+
+  <div class="d-flex justify-content-center gap-2 flex-wrap mb-3 btn-group-custom">
+    <a href="takelmas.html" class="btn btn-outline-danger btn-sm shadow" onclick="switchSheet('0', this)"><i class="bi bi-house-add"></i> Back</a>
+    <button id="btn-sheet1" class="btn btn-outline-primary btn-sm shadow" onclick="switchSheet('0', this)">Klaster2 Maternal</button>
+    <button id="btn-sheet2" class="btn btn-outline-primary btn-sm shadow" onclick="switchSheet('93788829', this)">Klaster2 Neonatal</button>
+    <button class="btn btn-outline-success btn-sm shadow" onclick="downloadPDF()">📥 Unduh PDF Sheet Aktif</button>
+  </div>
+
+  <div class="iframe-wrapper">
+    <iframe id="sheetFrame" src=""></iframe>
+  </div>
+</div>
+
+<script>
+  const spreadsheetId = "1B437MRWwtbj1r8KknL72gdPsPCynGYA_3yIhlbSZnY8"; // ID Anda
+  let currentGid = "0"; // Default: Sheet 1
+
+  function loadSheet(gid) {
+    const iframeURL = `https://docs.google.com/spreadsheets/d/e/2PACX-1vRCnBfgRrIc-HZ5sa_LSmHOvoi5g3cGMds0B4gYjw1zYzR4M_VCbUhFCdPweWr7auLLviYnecE5ueEg/pubhtml?widget=true&headers=false&gid=${gid}`;
+    document.getElementById('sheetFrame').src = iframeURL;
+  }
+
+  function switchSheet(gid, button) {
+    currentGid = gid;
+    loadSheet(gid);
+
+    document.querySelectorAll('.btn-group-custom .btn').forEach(btn => btn.classList.remove('active'));
+    if (button) button.classList.add('active');
+  }
+
+  function downloadPDF() {
+    const exportURL = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=pdf&portrait=false&size=A4&sheetnames=false&printtitle=false&pagenumbers=false&gridlines=false&horizontal_alignment=CENTER&gid=${currentGid}`;
+    window.open(exportURL, '_blank');
+  }
+
+  // Inisialisasi awal
+  window.onload = () => {
+    switchSheet(currentGid, document.getElementById("btn-sheet1"));
+  };
+</script>
+
+</body>
+</html>
